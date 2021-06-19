@@ -38,33 +38,19 @@ def predict_url(url):
 		
 def predict_img(img):
 	img = cv2.imdecode(img, cv2.IMREAD_COLOR)
-	# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	captcha = ""
-
 	for j in range(5):
 		crop_img = img[0:50, 8+j*26:8+(j+1)*26]
-		croped_img = "tmp/%s.png"%j
-		cv2.imwrite(croped_img, crop_img)
-		# im = Image.fromarray(np.asarray(croped_img), 'RGB')
-		# img_array = np.array(im)
-		# img_array = np.expand_dims(img_array, axis=0)
-
 		img_height = 50
 		img_width = 26
 		char_img = image.load_img(
 		    croped_img, target_size=(img_height, img_width)
 		)
-		
 		img_array = image.img_to_array(char_img)
 		img_array = tf.expand_dims(img_array, 0) # Create a batch
-
 		predictions = model.predict(img_array)
 		score = tf.nn.softmax(predictions[0])
-
 		captcha += class_names[np.argmax(score)]
-
-		os.unlink(croped_img)
-
 	return captcha
 
 class MainHandler(tornado.web.RequestHandler):
