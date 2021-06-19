@@ -13,7 +13,7 @@ model = VGG16(weights='imagenet', include_top=False)
 # Variables
 imdir = './splited' # DIR containing images
 targetdir = "./clustered" # DIR to copy clustered images to
-number_clusters = 10
+number_clusters = 9
 
 # Loop over files and get features
 filelist = glob.glob(os.path.join(imdir, '*.png'))
